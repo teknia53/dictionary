@@ -327,6 +327,7 @@
             <button id="searchBtn" onclick="doSearch()" disabled>Search</button>
         </div>
         <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), a single letter (a or α) to browse, or just a number to search on the GK number</div>
+        <div class="search-hint" id="cacheHint" style="margin-top:4px;">There will be a slight delay the first time you access the dictionary in this browser.</div>
     </div>
 
     <div class="results" id="results">
@@ -380,15 +381,58 @@
             return /^[\u0370-\u03FF\u1F00-\u1FFF]$/.test(ch);
         }
 
+        // IndexedDB cache for the SQLite database
+        function openCache() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open('dictCache', 1);
+                req.onupgradeneeded = () => req.result.createObjectStore('files');
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        function idbGet(db, key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('files', 'readonly');
+                const req = tx.objectStore('files').get(key);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        function idbPut(db, key, value) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('files', 'readwrite');
+                const req = tx.objectStore('files').put(value, key);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function loadDatabaseBytes() {
+            try {
+                const cache = await openCache();
+                const cached = await idbGet(cache, 'dictionary.dat');
+                if (cached) return cached;
+                const response = await fetch('dictionary.dat');
+                const buf = new Uint8Array(await response.arrayBuffer());
+                await idbPut(cache, 'dictionary.dat', buf);
+                return buf;
+            } catch (e) {
+                // IndexedDB unavailable — fall back to network
+                const response = await fetch('dictionary.dat');
+                return new Uint8Array(await response.arrayBuffer());
+            }
+        }
+
         // Initialize sql.js and load the database
         async function initDB() {
             const SQL = await initSqlJs({
                 locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`
             });
 
-            const response = await fetch('dictionary.dat');
-            const buf = await response.arrayBuffer();
-            db = new SQL.Database(new Uint8Array(buf));
+            const buf = await loadDatabaseBytes();
+            db = new SQL.Database(buf);
 
             // Register custom functions
             db.create_function('strip_accents', stripAccents);
@@ -399,6 +443,8 @@
             searchBtn.disabled = false;
             searchInput.focus();
             resultsDiv.innerHTML = '';
+            const cacheHint = document.getElementById('cacheHint');
+            if (cacheHint) cacheHint.remove();
 
             // Check URL parameters
             const urlParams = new URLSearchParams(window.location.search);
