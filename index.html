@@ -326,7 +326,7 @@
                    autocomplete="off" disabled>
             <button id="searchBtn" onclick="doSearch()" disabled>Search</button>
         </div>
-        <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), a single letter (a or α) to browse, or just a number to search on the GK number</div>
+        <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), a single letter (a or α) to browse, a range of numbers such as 21-23, or just a number to search on the GK number</div>
         <div class="search-hint" id="cacheHint" style="margin-top:4px;">There will be a slight delay the first time you access the dictionary in this browser.</div>
     </div>
 
@@ -492,6 +492,26 @@
             displayResults(results);
         }
 
+        function searchByGKRange(start, end) {
+            if (start > end) { const t = start; start = end; end = t; }
+            if (end - start > 500) { resultsDiv.innerHTML = '<div class="no-results">Range too large (max 500).</div>'; return; }
+            const results = queryRows(
+                "SELECT * FROM dictionary WHERE CAST(gk AS INTEGER) >= ? AND CAST(gk AS INTEGER) <= ? ORDER BY CAST(gk AS INTEGER)",
+                [start, end]
+            );
+            displayResults(results);
+        }
+
+        function searchByStrongsRange(start, end) {
+            if (start > end) { const t = start; start = end; end = t; }
+            if (end - start > 500) { resultsDiv.innerHTML = '<div class="no-results">Range too large (max 500).</div>'; return; }
+            const results = queryRows(
+                "SELECT * FROM dictionary WHERE CAST(strongs AS INTEGER) >= ? AND CAST(strongs AS INTEGER) <= ? ORDER BY CAST(strongs AS INTEGER)",
+                [start, end]
+            );
+            displayResults(results);
+        }
+
         function doSearch() {
             const raw = searchInput.value.trim();
             if (!raw || !db) return;
@@ -501,10 +521,14 @@
             const sMatch = raw.match(/^s:\s*(.+)$/i);
 
             if (gkMatch) {
+                const rangeM = gkMatch[1].match(/^(\d+)\s*-\s*(\d+)$/);
+                if (rangeM) { searchByGKRange(parseInt(rangeM[1]), parseInt(rangeM[2])); return; }
                 searchByGK(gkMatch[1]);
                 return;
             }
             if (sMatch) {
+                const rangeM = sMatch[1].match(/^(\d+)\s*-\s*(\d+)$/);
+                if (rangeM) { searchByStrongsRange(parseInt(rangeM[1]), parseInt(rangeM[2])); return; }
                 searchByStrongs(sMatch[1]);
                 return;
             }
@@ -528,6 +552,10 @@
                     if (results.length > 0) { showLetterList(results, greekLetter); return; }
                 }
             }
+
+            // Try number range (e.g. "21-23")
+            const rangeMatch = q.match(/^(\d+)\s*-\s*(\d+)$/);
+            if (rangeMatch) { searchByGKRange(parseInt(rangeMatch[1]), parseInt(rangeMatch[2])); return; }
 
             // Try GK number
             let results = queryRows("SELECT * FROM dictionary WHERE gk = ?", [q]);
