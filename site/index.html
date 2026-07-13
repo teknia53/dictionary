@@ -17,8 +17,27 @@
         header {
             background: #0067ac;
             color: white;
-            padding: 24px 0;
+            padding: 32px 0 24px;
             text-align: center;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 14px;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .back-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        header {
+            position: relative;
         }
 
         header h1 {
@@ -316,6 +335,7 @@
 </head>
 <body>
     <header>
+        <a href="https://www.billmounce.com" class="back-link">← Back to BillMounce.com</a>
         <h1>Greek New Testament Dictionary</h1>
     </header>
 
