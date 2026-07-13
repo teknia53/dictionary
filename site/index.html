@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greek New Testament Dictionary</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #F7F3E9;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0067ac;
+            color: white;
+            padding: 24px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 30px auto 20px;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #0067ac;
+        }
+
+        .search-box button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #0067ac;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .search-box button:hover {
+            background: #005490;
+        }
+
+        .search-hint {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .results {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 18px;
+        }
+
+        .result-list {
+            list-style: none;
+        }
+
+        .result-list li {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .result-list li:hover {
+            background: #eef5fb;
+        }
+
+        .result-list .lex {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+        }
+
+        .result-list .meta {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .word-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .word-header {
+            background: #0067ac;
+            color: white;
+            padding: 20px 24px;
+        }
+
+        .word-lexical {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .word-numbers {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .word-body {
+            padding: 20px 24px;
+        }
+
+        .word-translit {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .word-freq {
+            display: inline-block;
+            background: #e8f4fd;
+            color: #0067ac;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .word-definition {
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .concordance-section {
+            margin-top: 24px;
+            border-top: 2px solid #eee;
+            padding-top: 16px;
+        }
+
+        .concordance-section h3 {
+            font-size: 18px;
+            color: #0067ac;
+            margin-bottom: 12px;
+        }
+
+        .concordance-entry {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .concordance-entry:last-child {
+            border-bottom: none;
+        }
+
+        .concordance-ref {
+            font-weight: bold;
+            color: #0067ac;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .concordance-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .book-promo {
+            margin-top: 20px;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .book-promo img {
+            width: 140px;
+            height: auto;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .book-promo-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .book-promo-link {
+            color: #0067ac;
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .book-promo-link:hover {
+            text-decoration: underline;
+        }
+
+        .letter-heading {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0067ac;
+            margin-bottom: 16px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .letter-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .letter-table thead {
+            background: #0067ac;
+            color: white;
+        }
+
+        .letter-table th {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .letter-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+
+        .letter-table tr:hover {
+            background: #eef5fb;
+        }
+
+        .letter-table .lex {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+        }
+
+        .letter-table .short-def {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .letter-table a {
+            color: #0067ac;
+            text-decoration: none;
+        }
+
+        .letter-table a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 22px; }
+            .word-lexical { font-size: 26px; }
+            .search-box input { font-size: 16px; }
+            .book-promo {
+                flex-direction: column;
+                text-align: center;
+                margin: 30px 20px;
+            }
+            .book-promo img { width: 120px; }
+            .letter-table th:nth-child(5),
+            .letter-table td:nth-child(5) { display: none; }
+            .letter-table td, .letter-table th { padding: 6px 8px; font-size: 13px; }
+            .letter-table .lex { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Greek New Testament Dictionary</h1>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by GK number, Strong's number, or Greek word..."
+                   autocomplete="off">
+            <button id="searchBtn" onclick="doSearch()">Search</button>
+        </div>
+        <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), a single letter (a or α) to browse, or just a number to search on the GK number</div>
+    </div>
+
+    <div class="results" id="results"></div>
+
+    <div class="results">
+    <div class="book-promo">
+        <a href="https://www.billmounce.com/greekfortherestofus" target="_blank">
+            <img src="https://images.billmounce.com/gru3-200.png" alt="Greek for the Rest of Us">
+        </a>
+        <div class="book-promo-text">
+            <p>Do you want to get to the Greek behind the English translations, do Greek word studies, use better dictionaries and commentaries, and not be frightened by the Greek words? Do you want to understand a Strong's Bible but don't have the time to do all the memory of traditional language learning? Then <em>Greek for the Rest of Us</em> is just for you!</p>
+            <a href="https://www.billmounce.com/greekfortherestofus" target="_blank" class="book-promo-link">Read more &hellip;</a>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://flashworksbible-api.bill-mounce.workers.dev';
+
+        const searchInput = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('results');
+
+        const latinToGreek = {
+            'a': 'α', 'b': 'β', 'g': 'γ', 'd': 'δ', 'e': 'ε',
+            'z': 'ζ', 'h': 'η', 'i': 'ι', 'k': 'κ', 'l': 'λ',
+            'm': 'μ', 'n': 'ν', 'x': 'ξ', 'o': 'ο', 'p': 'π',
+            'r': 'ρ', 's': 'σ', 't': 'τ', 'u': 'υ', 'f': 'φ',
+            'c': 'χ', 'y': 'ψ', 'w': 'ω'
+        };
+
+        function isGreekLetter(ch) {
+            return /^[Ͱ-Ͽἀ-῿]$/.test(ch);
+        }
+
+        function stripTags(str) {
+            return str ? str.replace(/<[^>]*>/g, '') : '';
+        }
+
+        function escHtml(s) {
+            if (s === null || s === undefined) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        searchInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') doSearch();
+        });
+
+        // Check URL parameters on load
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialGK = urlParams.get('gk');
+        const initialStrongs = urlParams.get('strongs');
+        const initialQ = urlParams.get('q');
+        if (initialGK) {
+            searchInput.value = initialGK;
+            doSearch();
+        } else if (initialStrongs) {
+            searchInput.value = 's:' + initialStrongs;
+            doSearch();
+        } else if (initialQ) {
+            searchInput.value = initialQ;
+            doSearch();
+        }
+
+        async function doSearch() {
+            const raw = searchInput.value.trim();
+            if (!raw) return;
+
+            resultsDiv.innerHTML = '<div class="loading">Searching...</div>';
+
+            // Single letter — browse
+            if (raw.length === 1) {
+                const lower = raw.toLowerCase();
+                if (latinToGreek[lower] || isGreekLetter(raw)) {
+                    const letter = latinToGreek[lower] || raw;
+                    try {
+                        const resp = await fetch(`${API_BASE}/api/dict/browse?letter=${encodeURIComponent(letter)}`);
+                        const results = await resp.json();
+                        if (results.length > 0) {
+                            showLetterList(results, letter);
+                            return;
+                        }
+                    } catch (err) {
+                        resultsDiv.innerHTML = '<div class="no-results">Error connecting to server.</div>';
+                        return;
+                    }
+                }
+            }
+
+            // General search
+            try {
+                const resp = await fetch(`${API_BASE}/api/dict/search?q=${encodeURIComponent(raw)}`);
+                const results = await resp.json();
+                displayResults(results);
+            } catch (err) {
+                resultsDiv.innerHTML = '<div class="no-results">Error connecting to server.</div>';
+            }
+        }
+
+        function displayResults(results) {
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div class="no-results">No results found.</div>';
+            } else if (results.length === 1) {
+                showWord(results[0]);
+            } else {
+                showList(results);
+            }
+        }
+
+        function showList(words) {
+            let html = '<ul class="result-list">';
+            for (const w of words) {
+                html += `<li onclick="selectWord('${escHtml(w.gk)}')">
+                    <span class="lex">${w.lexical}</span>
+                    <span class="meta">GK ${escHtml(w.gk)} &middot; Strong's ${w.strongs || '—'} &middot; ${escHtml(w.frequency)}</span>
+                </li>`;
+            }
+            html += '</ul>';
+            resultsDiv.innerHTML = html;
+        }
+
+        function showLetterList(words, letter) {
+            const greekUpper = letter.toUpperCase();
+            let html = `<div class="letter-heading">${greekUpper} &mdash; ${words.length} words</div>`;
+            html += '<table class="letter-table"><thead><tr><th>GK</th><th>Strong\'s</th><th>Greek</th><th>Transliteration</th><th>Definition</th></tr></thead><tbody>';
+            for (const w of words) {
+                const translit = stripTags(w.transliteration);
+                const shortDef = w.definition ? w.definition.substring(0, 80) + (w.definition.length > 80 ? '...' : '') : '';
+                html += `<tr>
+                    <td><a href="#" onclick="event.preventDefault();selectWord('${escHtml(w.gk)}')">${escHtml(w.gk)}</a></td>
+                    <td>${w.strongs ? '<a href="#" onclick="event.preventDefault();selectWord(\'' + escHtml(w.gk) + '\')">' + escHtml(w.strongs) + '</a>' : '—'}</td>
+                    <td class="lex">${w.lexical}</td>
+                    <td><a href="#" onclick="event.preventDefault();selectWord('${escHtml(w.gk)}')">${escHtml(translit)}</a></td>
+                    <td class="short-def">${shortDef}</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+            resultsDiv.innerHTML = html;
+        }
+
+        async function selectWord(gk) {
+            resultsDiv.innerHTML = '<div class="loading">Loading...</div>';
+            try {
+                const resp = await fetch(`${API_BASE}/api/dictionary?gk=${encodeURIComponent(gk)}`);
+                const word = await resp.json();
+                if (word) showWord(word);
+                else resultsDiv.innerHTML = '<div class="no-results">Word not found.</div>';
+            } catch (err) {
+                resultsDiv.innerHTML = '<div class="no-results">Error loading word.</div>';
+            }
+        }
+
+        async function showWord(word) {
+            // Fetch concordance in parallel
+            let entries = [];
+            try {
+                const resp = await fetch(`${API_BASE}/api/concordance?gk=${encodeURIComponent(word.gk)}`);
+                entries = await resp.json();
+            } catch (err) {}
+
+            let concHtml = '';
+            if (entries.length === 0) {
+                concHtml = '<h3>Concordance</h3><div style="color:#999;padding:10px 0;">No concordance entries found.</div>';
+            } else {
+                concHtml = `<h3>Concordance (${entries.length} ${entries.length === 1 ? 'entry' : 'entries'})</h3>`;
+                for (const e of entries) {
+                    concHtml += `
+                        <div class="concordance-entry">
+                            <div class="concordance-ref">${escHtml(e.reference)}</div>
+                            <div class="concordance-text">${e.concordance}</div>
+                        </div>`;
+                }
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="word-card">
+                    <div class="word-header">
+                        <div class="word-lexical">${word.lexical}</div>
+                        <div class="word-numbers">
+                            GK ${escHtml(word.gk)}
+                            ${word.strongs ? ' &middot; Strong\'s ' + escHtml(word.strongs) : ''}
+                        </div>
+                    </div>
+                    <div class="word-body">
+                        <div class="word-translit">${word.transliteration}</div>
+                        <div class="word-freq">${escHtml(word.frequency)}</div>
+                        <div class="word-definition">${word.definition}</div>
+                        <div class="concordance-section">
+                            ${concHtml}
+                        </div>
+                    </div>
+                </div>`;
+        }
+    </script>
+</body>
+</html>

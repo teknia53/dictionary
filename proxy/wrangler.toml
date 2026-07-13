@@ -1,0 +1,11 @@
+name = "dictionary-proxy"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Route: intercept billmounce.com/dictionary* and run this Worker.
+routes = [
+  { pattern = "billmounce.com/dictionary*", zone_name = "billmounce.com" }
+]
+
+[vars]
+PAGES_URL = "https://greek-dictionary-6wu.pages.dev"
