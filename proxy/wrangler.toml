@@ -4,7 +4,8 @@ compatibility_date = "2025-01-01"
 
 # Route: intercept billmounce.com/dictionary* and run this Worker.
 routes = [
-  { pattern = "billmounce.com/dictionary*", zone_name = "billmounce.com" }
+  { pattern = "billmounce.com/dictionary*", zone_name = "billmounce.com" },
+  { pattern = "www.billmounce.com/dictionary*", zone_name = "billmounce.com" }
 ]
 
 [vars]

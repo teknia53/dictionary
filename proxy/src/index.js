@@ -14,6 +14,14 @@ export default {
     }
     path = path.slice(PREFIX.length);
 
+    // Pretty URLs: /dictionary/25, /dictionary/gk:27, /dictionary/ἀγαπάω …
+    // Anything that isn't a real asset request gets the app shell; the page
+    // reads the term back out of location.pathname.
+    const lastSegment = path.split('/').pop();
+    if (lastSegment && !lastSegment.includes('.')) {
+      path = '/index.html';
+    }
+
     const targetUrl = env.PAGES_URL + path + url.search;
     const proxyReq = new Request(targetUrl, {
       method: request.method,

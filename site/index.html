@@ -393,11 +393,19 @@
             if (e.key === 'Enter') doSearch();
         });
 
+        // A trailing path segment is a search term: /dictionary/25, /dictionary/gk:27, /dictionary/ἀγαπάω
+        function pathTerm() {
+            const segs = window.location.pathname.split('/').filter(Boolean);
+            const last = segs[segs.length - 1];
+            if (!last || last === 'dictionary' || last.includes('.')) return '';
+            try { return decodeURIComponent(last); } catch (e) { return last; }
+        }
+
         // Check URL parameters on load
         const urlParams = new URLSearchParams(window.location.search);
         const initialGK = urlParams.get('gk');
         const initialStrongs = urlParams.get('strongs');
-        const initialQ = urlParams.get('q');
+        const initialQ = urlParams.get('q') || pathTerm();
         if (initialGK) {
             searchInput.value = initialGK;
             doSearch();
