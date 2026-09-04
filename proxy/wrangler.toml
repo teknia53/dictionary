@@ -2,11 +2,19 @@ name = "dictionary-proxy"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
-# Route: intercept billmounce.com/dictionary* and run this Worker.
+# Routes: the dictionary lives at www.billmounce.com/greek-dictionary/ (the URL
+# space of the old Drupal pages). The apex host and the interim /dictionary/*
+# paths are intercepted only to redirect them there.
 routes = [
+  { pattern = "www.billmounce.com/greek-dictionary", zone_name = "billmounce.com" },
+  { pattern = "www.billmounce.com/greek-dictionary/*", zone_name = "billmounce.com" },
+  { pattern = "billmounce.com/greek-dictionary", zone_name = "billmounce.com" },
+  { pattern = "billmounce.com/greek-dictionary/*", zone_name = "billmounce.com" },
   { pattern = "billmounce.com/dictionary*", zone_name = "billmounce.com" },
   { pattern = "www.billmounce.com/dictionary*", zone_name = "billmounce.com" }
 ]
 
 [vars]
 PAGES_URL = "https://greek-dictionary-6wu.pages.dev"
+API_URL = "https://flashworksbible-api.bill-mounce.workers.dev"
+SITE_HOST = "www.billmounce.com"

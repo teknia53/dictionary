@@ -92,6 +92,32 @@
             color: #888;
         }
 
+        .letter-nav {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #888;
+            line-height: 2;
+        }
+
+        .letter-nav a {
+            display: inline-block;
+            min-width: 24px;
+            text-align: center;
+            margin-right: 2px;
+            color: #0067ac;
+            text-decoration: none;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 17px;
+        }
+
+        .letter-nav a:hover { text-decoration: underline; }
+
+        .letter-nav a.all {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 14px;
+            margin-left: 6px;
+        }
+
         .results {
             max-width: 900px;
             margin: 0 auto 40px;
@@ -120,6 +146,16 @@
 
         .result-list li:hover {
             background: #eef5fb;
+        }
+
+        /* Prerendered lists (from the proxy Worker) wrap each row in a real link */
+        .result-list li a {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            width: 100%;
+            color: inherit;
+            text-decoration: none;
         }
 
         .result-list .lex {
@@ -346,6 +382,11 @@
             <button id="searchBtn" onclick="doSearch()">Search</button>
         </div>
         <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), a single letter (a or α) to browse, or just a number to search on the GK number</div>
+        <nav class="letter-nav" aria-label="Browse by letter">
+            <span>Browse all words:</span>
+            <a href="/greek-dictionary/words/alpha">Α</a><a href="/greek-dictionary/words/beta">Β</a><a href="/greek-dictionary/words/gamma">Γ</a><a href="/greek-dictionary/words/delta">Δ</a><a href="/greek-dictionary/words/epsilon">Ε</a><a href="/greek-dictionary/words/zeta">Ζ</a><a href="/greek-dictionary/words/eta">Η</a><a href="/greek-dictionary/words/theta">Θ</a><a href="/greek-dictionary/words/iota">Ι</a><a href="/greek-dictionary/words/kappa">Κ</a><a href="/greek-dictionary/words/lambda">Λ</a><a href="/greek-dictionary/words/mu">Μ</a><a href="/greek-dictionary/words/nu">Ν</a><a href="/greek-dictionary/words/xi">Ξ</a><a href="/greek-dictionary/words/omicron">Ο</a><a href="/greek-dictionary/words/pi">Π</a><a href="/greek-dictionary/words/rho">Ρ</a><a href="/greek-dictionary/words/sigma">Σ</a><a href="/greek-dictionary/words/tau">Τ</a><a href="/greek-dictionary/words/upsilon">Υ</a><a href="/greek-dictionary/words/phi">Φ</a><a href="/greek-dictionary/words/chi">Χ</a><a href="/greek-dictionary/words/psi">Ψ</a><a href="/greek-dictionary/words/omega">Ω</a>
+            <a href="/greek-dictionary/words/" class="all">Index</a>
+        </nav>
     </div>
 
     <div class="results" id="results"></div>
@@ -393,11 +434,13 @@
             if (e.key === 'Enter') doSearch();
         });
 
-        // A trailing path segment is a search term: /dictionary/25, /dictionary/gk:27, /dictionary/ἀγαπάω
+        // A trailing path segment after the base path is an entry slug:
+        // /greek-dictionary/logos, /greek-dictionary/gk:27, /greek-dictionary/ἀγαπάω
         function pathTerm() {
             const segs = window.location.pathname.split('/').filter(Boolean);
+            if (segs.length < 2) return '';
             const last = segs[segs.length - 1];
-            if (!last || last === 'dictionary' || last.includes('.')) return '';
+            if (!last || last.includes('.')) return '';
             try { return decodeURIComponent(last); } catch (e) { return last; }
         }
 
@@ -405,7 +448,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         const initialGK = urlParams.get('gk');
         const initialStrongs = urlParams.get('strongs');
-        const initialQ = urlParams.get('q') || pathTerm();
+        const initialQ = urlParams.get('q');
+        const initialPath = pathTerm();
         if (initialGK) {
             searchInput.value = initialGK;
             doSearch();
@@ -415,9 +459,17 @@
         } else if (initialQ) {
             searchInput.value = initialQ;
             doSearch();
+        } else if (resultsDiv.dataset.prerendered) {
+            // The proxy Worker already looked this entry up and put it in the page.
+            searchInput.value = resultsDiv.dataset.term || initialPath;
+        } else if (initialPath) {
+            // /greek-dictionary/<word> is an entry URL, not a free-text search:
+            // resolve it by number, Greek form, or transliteration only.
+            searchInput.value = initialPath;
+            doSearch(true);
         }
 
-        async function doSearch() {
+        async function doSearch(slugMode) {
             const raw = searchInput.value.trim();
             if (!raw) return;
 
@@ -444,7 +496,8 @@
 
             // General search
             try {
-                const resp = await fetch(`${API_BASE}/api/dict/search?q=${encodeURIComponent(raw)}`);
+                const slugParam = slugMode === true ? '&slug=1' : '';
+                const resp = await fetch(`${API_BASE}/api/dict/search?q=${encodeURIComponent(raw)}${slugParam}`);
                 const results = await resp.json();
                 displayResults(results);
             } catch (err) {

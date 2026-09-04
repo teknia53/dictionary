@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse All Greek New Testament Words – Greek New Testament Dictionary</title>
+    <meta name="description" content="Browse all 5333 words in Bill Mounce&#x27;s Greek New Testament Dictionary by letter, from alpha to omega.">
+    <link rel="canonical" href="https://www.billmounce.com/greek-dictionary/words/">
+    <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; background: #F7F3E9; color: #333; min-height: 100vh; }
+header { background: #0067ac; color: white; padding: 32px 0 24px; text-align: center; position: relative; }
+header h1 { font-size: 28px; font-weight: normal; letter-spacing: 1px; }
+header h1 a { color: white; text-decoration: none; }
+.back-link { position: absolute; top: 12px; left: 16px; color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; }
+.back-link:hover { color: white; text-decoration: underline; }
+main { max-width: 900px; margin: 0 auto 40px; padding: 0 20px; }
+.search-container { max-width: 700px; margin: 30px auto 0; }
+.search-box { display: flex; gap: 10px; }
+.search-box input { flex: 1; padding: 12px 16px; font-size: 18px; font-family: 'Times New Roman', Times, serif; border: 2px solid #ccc; border-radius: 6px; outline: none; }
+.search-box input:focus { border-color: #0067ac; }
+.search-box button { padding: 12px 24px; font-size: 16px; background: #0067ac; color: white; border: none; border-radius: 6px; cursor: pointer; font-family: Georgia, 'Times New Roman', serif; }
+.search-box button:hover { background: #005490; }
+.search-hint { margin-top: 8px; font-size: 14px; color: #888; }
+.letter-nav { margin: 12px 0 24px; font-size: 14px; color: #888; line-height: 2; text-align: center; }
+.letter-nav a { display: inline-block; min-width: 26px; text-align: center; margin: 0 1px; color: #0067ac; text-decoration: none; font-family: 'Times New Roman', Times, serif; font-size: 18px; }
+.letter-nav a:hover { text-decoration: underline; }
+.letter-nav a.current { background: #0067ac; color: white; border-radius: 4px; }
+.letter-nav a.all { font-family: Georgia, 'Times New Roman', serif; font-size: 14px; margin-left: 8px; }
+h2.letter-heading { font-size: 24px; font-weight: bold; color: #0067ac; margin-bottom: 6px; font-family: 'Times New Roman', Times, serif; }
+p.intro { color: #666; font-size: 15px; margin-bottom: 16px; line-height: 1.5; }
+p.intro a { color: #0067ac; }
+.letter-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.letter-table thead { background: #0067ac; color: white; }
+.letter-table th { padding: 10px 12px; text-align: left; font-size: 14px; font-weight: normal; }
+.letter-table td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 15px; vertical-align: top; }
+.letter-table tr:hover { background: #eef5fb; }
+.letter-table .lex { font-family: 'Times New Roman', Times, serif; font-size: 18px; white-space: nowrap; }
+.letter-table .short-def { color: #555; font-size: 14px; }
+.letter-table a { color: #0067ac; text-decoration: none; }
+.letter-table a:hover { text-decoration: underline; }
+.pager { display: flex; justify-content: space-between; margin: 20px 0; font-size: 16px; }
+.pager a { color: #0067ac; text-decoration: none; }
+.pager a:hover { text-decoration: underline; }
+.index-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.index-list li a { display: flex; justify-content: space-between; align-items: baseline; background: white; padding: 12px 16px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); color: #0067ac; text-decoration: none; }
+.index-list li a:hover { background: #eef5fb; }
+.index-list .g { font-family: 'Times New Roman', Times, serif; font-size: 22px; }
+.index-list .n { font-size: 13px; color: #888; }
+@media (max-width: 600px) {
+  header h1 { font-size: 22px; }
+  .letter-table th:nth-child(5), .letter-table td:nth-child(5) { display: none; }
+  .letter-table td, .letter-table th { padding: 6px 8px; font-size: 13px; }
+  .letter-table .lex { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+    <header>
+        <a href="https://www.billmounce.com" class="back-link">← Back to BillMounce.com</a>
+        <h1><a href="/greek-dictionary/">Greek New Testament Dictionary</a></h1>
+    </header>
+    <main>
+<div class="search-container">
+            <form class="search-box" action="/greek-dictionary/" method="get">
+                <input type="text" name="q" placeholder="Search by GK number, Strong's number, or Greek word..." autocomplete="off">
+                <button type="submit">Search</button>
+            </form>
+            <div class="search-hint">Examples: gk:27, s:26 (Strong's), ἀγαπάω (Greek word), logos (English transliteration), or just a number to search on the GK number</div>
+        </div>
+        <nav class="letter-nav" aria-label="Browse by letter"><span>Browse by letter:</span> <a href="/greek-dictionary/words/alpha" title="alpha">Α</a><a href="/greek-dictionary/words/beta" title="beta">Β</a><a href="/greek-dictionary/words/gamma" title="gamma">Γ</a><a href="/greek-dictionary/words/delta" title="delta">Δ</a><a href="/greek-dictionary/words/epsilon" title="epsilon">Ε</a><a href="/greek-dictionary/words/zeta" title="zeta">Ζ</a><a href="/greek-dictionary/words/eta" title="eta">Η</a><a href="/greek-dictionary/words/theta" title="theta">Θ</a><a href="/greek-dictionary/words/iota" title="iota">Ι</a><a href="/greek-dictionary/words/kappa" title="kappa">Κ</a><a href="/greek-dictionary/words/lambda" title="lambda">Λ</a><a href="/greek-dictionary/words/mu" title="mu">Μ</a><a href="/greek-dictionary/words/nu" title="nu">Ν</a><a href="/greek-dictionary/words/xi" title="xi">Ξ</a><a href="/greek-dictionary/words/omicron" title="omicron">Ο</a><a href="/greek-dictionary/words/pi" title="pi">Π</a><a href="/greek-dictionary/words/rho" title="rho">Ρ</a><a href="/greek-dictionary/words/sigma" title="sigma">Σ</a><a href="/greek-dictionary/words/tau" title="tau">Τ</a><a href="/greek-dictionary/words/upsilon" title="upsilon">Υ</a><a href="/greek-dictionary/words/phi" title="phi">Φ</a><a href="/greek-dictionary/words/chi" title="chi">Χ</a><a href="/greek-dictionary/words/psi" title="psi">Ψ</a><a href="/greek-dictionary/words/omega" title="omega">Ω</a><a href="/greek-dictionary/words/" class="all">Index</a></nav>
+        <h2 class="letter-heading">All Greek New Testament Words by Letter</h2>
+        <p class="intro">5333 words from Bill Mounce's <a href="/greek-dictionary/">Greek New Testament Dictionary</a>,
+        arranged by their first letter. Each entry gives the definition, GK and Strong's numbers, frequency,
+        and every occurrence in the New Testament.</p>
+        <ul class="index-list"><li><a href="/greek-dictionary/words/alpha"><span class="g">Α α <small>alpha</small></span><span class="n">878 words</span></a></li><li><a href="/greek-dictionary/words/beta"><span class="g">Β β <small>beta</small></span><span class="n">144 words</span></a></li><li><a href="/greek-dictionary/words/gamma"><span class="g">Γ γ <small>gamma</small></span><span class="n">97 words</span></a></li><li><a href="/greek-dictionary/words/delta"><span class="g">Δ δ <small>delta</small></span><span class="n">299 words</span></a></li><li><a href="/greek-dictionary/words/epsilon"><span class="g">Ε ε <small>epsilon</small></span><span class="n">735 words</span></a></li><li><a href="/greek-dictionary/words/zeta"><span class="g">Ζ ζ <small>zeta</small></span><span class="n">33 words</span></a></li><li><a href="/greek-dictionary/words/eta"><span class="g">Η η <small>eta</small></span><span class="n">45 words</span></a></li><li><a href="/greek-dictionary/words/theta"><span class="g">Θ θ <small>theta</small></span><span class="n">105 words</span></a></li><li><a href="/greek-dictionary/words/iota"><span class="g">Ι ι <small>iota</small></span><span class="n">63 words</span></a></li><li><a href="/greek-dictionary/words/kappa"><span class="g">Κ κ <small>kappa</small></span><span class="n">473 words</span></a></li><li><a href="/greek-dictionary/words/lambda"><span class="g">Λ λ <small>lambda</small></span><span class="n">112 words</span></a></li><li><a href="/greek-dictionary/words/mu"><span class="g">Μ μ <small>mu</small></span><span class="n">263 words</span></a></li><li><a href="/greek-dictionary/words/nu"><span class="g">Ν ν <small>nu</small></span><span class="n">99 words</span></a></li><li><a href="/greek-dictionary/words/xi"><span class="g">Ξ ξ <small>xi</small></span><span class="n">10 words</span></a></li><li><a href="/greek-dictionary/words/omicron"><span class="g">Ο ο <small>omicron</small></span><span class="n">213 words</span></a></li><li><a href="/greek-dictionary/words/pi"><span class="g">Π π <small>pi</small></span><span class="n">645 words</span></a></li><li><a href="/greek-dictionary/words/rho"><span class="g">Ρ ρ <small>rho</small></span><span class="n">57 words</span></a></li><li><a href="/greek-dictionary/words/sigma"><span class="g">Σ σ <small>sigma</small></span><span class="n">470 words</span></a></li><li><a href="/greek-dictionary/words/tau"><span class="g">Τ τ <small>tau</small></span><span class="n">172 words</span></a></li><li><a href="/greek-dictionary/words/upsilon"><span class="g">Υ υ <small>upsilon</small></span><span class="n">121 words</span></a></li><li><a href="/greek-dictionary/words/phi"><span class="g">Φ φ <small>phi</small></span><span class="n">146 words</span></a></li><li><a href="/greek-dictionary/words/chi"><span class="g">Χ χ <small>chi</small></span><span class="n">97 words</span></a></li><li><a href="/greek-dictionary/words/psi"><span class="g">Ψ ψ <small>psi</small></span><span class="n">31 words</span></a></li><li><a href="/greek-dictionary/words/omega"><span class="g">Ω ω <small>omega</small></span><span class="n">25 words</span></a></li></ul>
+    </main>
+</body>
+</html>
