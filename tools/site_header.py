@@ -32,6 +32,7 @@ LOGO_FILE = HERE / "site_logo.svg"
 TARGETS = [
     HERE.parent / "site" / "index.html",
     Path.home() / "Claude" / "FlashWorksBible" / "site" / "index.html",
+    Path.home() / "Claude" / "FlashWorks" / "site" / "index.html",
 ]
 
 HEAD_START, HEAD_END = "<!-- site-header-head:start -->", "<!-- site-header-head:end -->"
