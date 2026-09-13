@@ -183,7 +183,35 @@
         .word-translit {
             font-size: 16px;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+        }
+
+        .word-form {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 22px;
+            line-height: 1.4;
+        }
+
+        .word-pparts {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-top: 2px;
+        }
+
+        .word-pparts .label,
+        .word-mbg .label {
+            color: #666;
+        }
+
+        .word-pparts .greek {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 17px;
+        }
+
+        .word-gloss {
+            margin-top: 16px;
+            font-size: 17px;
+            line-height: 1.5;
         }
 
         .word-freq {
@@ -193,41 +221,19 @@
             padding: 3px 10px;
             border-radius: 12px;
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-top: 8px;
+        }
+
+        .word-mbg {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-top: 6px;
         }
 
         .word-definition {
             font-size: 17px;
             line-height: 1.6;
-        }
-
-        .word-facts {
-            margin: 0 0 14px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .word-facts dt {
-            display: inline;
-            color: #666;
-        }
-
-        .word-facts dt::after {
-            content: ': ';
-        }
-
-        .word-facts dd {
-            display: inline;
-            margin: 0;
-        }
-
-        .word-facts dd.greek {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 17px;
-        }
-
-        .word-facts div + div {
-            margin-top: 2px;
+            margin-top: 16px;
         }
 
         .concordance-section {
@@ -716,7 +722,8 @@
             html += '<table class="letter-table"><thead><tr><th>GK</th><th>Strong\'s</th><th>Greek</th><th>Transliteration</th><th>Definition</th></tr></thead><tbody>';
             for (const w of words) {
                 const translit = stripTags(w.transliteration);
-                const shortDef = w.definition ? w.definition.substring(0, 80) + (w.definition.length > 80 ? '...' : '') : '';
+                const src = w.gloss || w.definition || '';
+                const shortDef = w.gloss ? src : src.substring(0, 80) + (src.length > 80 ? '...' : '');
                 html += `<tr>
                     <td><a href="#" onclick="event.preventDefault();selectWord('${escHtml(w.gk)}')">${escHtml(w.gk)}</a></td>
                     <td>${w.strongs ? '<a href="#" onclick="event.preventDefault();selectWord(\'' + escHtml(w.gk) + '\')">' + escHtml(w.strongs) + '</a>' : '—'}</td>
@@ -741,17 +748,27 @@
             }
         }
 
-        // Principal parts (verbs) and the Morphology of Biblical Greek tag, from the
-        // old Drupal lexicon. Either may be empty; the block is omitted when both are.
-        function wordFacts(word) {
-            let facts = '';
+        // The body of the word card. Order: transliteration; full dictionary form (with
+        // principal parts for verbs); gloss; frequency; morphology tag; then the fuller
+        // definition. The dictionary form, principal parts, gloss, and MBG tag come
+        // from the old Drupal lexicon and may be empty.
+        function wordBody(word) {
+            let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
+            if (word.dictionary_form) {
+                html += `<div class="word-form">${escHtml(word.dictionary_form)}</div>`;
+            }
             if (word.principal_parts) {
-                facts += `<div><dt>Principal parts</dt><dd class="greek">${escHtml(word.principal_parts)}</dd></div>`;
+                html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${escHtml(word.principal_parts)}</span></div>`;
             }
+            if (word.gloss) {
+                html += `<div class="word-gloss">${word.gloss}</div>`;
+            }
+            html += `<div><span class="word-freq">${escHtml(word.frequency)}</span></div>`;
             if (word.mbg) {
-                facts += `<div><dt>Morphology tag</dt><dd title="Category in Mounce, The Morphology of Biblical Greek">${escHtml(word.mbg)}</dd></div>`;
+                html += `<div class="word-mbg"><span class="label">Morphology tag: </span><span title="Category in Mounce, The Morphology of Biblical Greek">${escHtml(word.mbg)}</span></div>`;
             }
-            return facts ? `<dl class="word-facts">${facts}</dl>` : '';
+            html += `<div class="word-definition">${word.definition || ''}</div>`;
+            return html;
         }
 
         async function showWord(word) {
@@ -786,10 +803,7 @@
                         </div>
                     </div>
                     <div class="word-body">
-                        <div class="word-translit">${word.transliteration}</div>
-                        <div class="word-freq">${escHtml(word.frequency)}</div>
-                        ${wordFacts(word)}
-                        <div class="word-definition">${word.definition}</div>
+                        ${wordBody(word)}
                         <div class="concordance-section">
                             ${concHtml}
                         </div>

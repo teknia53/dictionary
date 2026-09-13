@@ -1,5 +1,6 @@
 {
 "a": {
+"definition": "1) letter of the Greek alphabet; 2) inseparable prefix: 1.1 alpha privative (as non- or un- in English), 1.2 prefix of intensity, 1.3 prefix of similarity, collectivity or association; also used as the numeral <i>1</i> in the superscriptions of some Greek manuscripts",
 "dictionary": "α",
 "frequency": "0",
 "gk": "1",
@@ -818,6 +819,7 @@
 "type": "lexicon"
 },
 "agape": {
+"definition": "<i>love, generosity, kindly concern, devotedness;</i>, pl. <i>love-feasts,</i> Jude 12",
 "dictionary": "ἀγάπη, -ης, ἡ",
 "frequency": "116",
 "gk": "27",
@@ -14648,6 +14650,7 @@
 "type": "lexicon"
 },
 "choos": {
+"definition": "<p>See χοῦς</p>",
 "dictionary": "χόος",
 "gk": "5959",
 "gloss": "dust; same as {5967}",
@@ -20056,6 +20059,7 @@
 "type": "lexicon"
 },
 "eidon": {
+"definition": "I saw",
 "dictionary": "εἶδον",
 "frequency": "0",
 "gk": "1625",
@@ -45763,6 +45767,7 @@
 "type": "lexicon"
 },
 "lego": {
+"definition": "<i>to lay, to arrange, to gather; to say,</i> Mt. 1:20; <i>to speak, make an address</i> or <i>speech,</i> Acts 26:1; <i>to say</i> mentally, in thought, Mt. 3:9; Lk. 3:8; <i>to say</i> in written language, Mk. 15:28; Lk. 1:63; Jn. 19:37; <i>to say,</i> as distinguished from acting, Mt. 23:3; <i>to mention, speak of,</i> Mk. 14:71; Lk. 9:31; Jn. 8:27; <i>to tell, declare, narrate,</i> Mt. 21:27; Mk. 10:32; <i>to express,</i> Heb. 5:11; <i>to put forth, propound,</i> Lk. 5:36; 13:6; Jn. 16:29; <i>to mean, to intend to signify,</i> 1 Cor. 1:12; 10:29; <i>to say, declare, affirm, maintain,</i> Mt. 3:9; 5:18; Mk. 12:18; Acts 17:7; 26:22; 1 Cor. 1:10; <i>to enjoin,</i> Acts 15:24; 21:21; Rom. 2:22; <i>to term, designate, cull,</i> Mt. 19:17; Mk. 12:37; Lk. 20:37; 23:2; 1 Cor. 8:5; <i>to call</i> by a name, Mt. 2:23; pass. <i>to be further named, to be surnamed,</i> Mt. 1:16; <i>to be explained, interpreted,</i> Jn. 4:25; 20:16, 24; in NT σὺ λέγεις, <i>you say,</i> a form of affirmative answer to a question Mt. 27:11; Mk. 15:2; Jn. 18:37",
 "dictionary": "λέγω",
 "frequency": "2353",
 "gk": "3306",

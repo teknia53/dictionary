@@ -226,7 +226,7 @@ def main():
             translit = html.escape(strip_tags(w["transliteration"]))
             gk = html.escape(str(w["gk"]))
             strongs = html.escape(str(w["strongs"])) if w.get("strongs") else "—"
-            gloss = html.escape(short_gloss(w.get("definition")))
+            gloss = html.escape(short_gloss(w.get("gloss") or w.get("definition"), limit=140))
             rows.append(
                 f'<tr><td class="lex"><a href="{href}">{lex}</a></td>'
                 f'<td><a href="{href}">{translit}</a></td>'

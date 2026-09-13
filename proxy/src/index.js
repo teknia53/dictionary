@@ -66,17 +66,27 @@ function truncate(text, max) {
 // Mirrors the markup the app builds client-side in site/index.html so the
 // prerendered entry looks identical.
 
-// Principal parts (verbs) and the Morphology of Biblical Greek tag, from the old
-// Drupal lexicon. Either may be empty; the block is omitted when both are.
-function wordFacts(word) {
-  let facts = '';
+// The body of the word card. Order: transliteration; full dictionary form (with
+// principal parts for verbs); gloss; frequency; morphology tag; then the fuller
+// definition. The dictionary form, principal parts, gloss, and MBG tag come from
+// the old Drupal lexicon and may be empty.
+function wordBody(word) {
+  let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
+  if (word.dictionary_form) {
+    html += `<div class="word-form">${esc(word.dictionary_form)}</div>`;
+  }
   if (word.principal_parts) {
-    facts += `<div><dt>Principal parts</dt><dd class="greek">${esc(word.principal_parts)}</dd></div>`;
+    html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${esc(word.principal_parts)}</span></div>`;
   }
+  if (word.gloss) {
+    html += `<div class="word-gloss">${word.gloss}</div>`;
+  }
+  html += `<div><span class="word-freq">${esc(word.frequency)}</span></div>`;
   if (word.mbg) {
-    facts += `<div><dt>Morphology tag</dt><dd title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</dd></div>`;
+    html += `<div class="word-mbg"><span class="label">Morphology tag: </span><span title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</span></div>`;
   }
-  return facts ? `<dl class="word-facts">${facts}</dl>` : '';
+  html += `<div class="word-definition">${word.definition || ''}</div>`;
+  return html;
 }
 
 function wordCard(word, entries) {
@@ -103,10 +113,7 @@ function wordCard(word, entries) {
                         </div>
                     </div>
                     <div class="word-body">
-                        <div class="word-translit">${word.transliteration || ''}</div>
-                        <div class="word-freq">${esc(word.frequency)}</div>
-                        ${wordFacts(word)}
-                        <div class="word-definition">${word.definition || ''}</div>
+                        ${wordBody(word)}
                         <div class="concordance-section">
                             ${conc}
                         </div>
@@ -218,7 +225,7 @@ async function entryPage(env, request, url, slug) {
     const entries = await apiJson(env, `/api/concordance?gk=${encodeURIComponent(word.gk)}`);
     const lexical = stripTags(word.lexical);
     const translit = stripTags(word.transliteration);
-    const gloss = truncate(stripTags(word.definition), 120);
+    const gloss = truncate(stripTags(word.gloss || word.definition), 120);
     return renderShell(shell, {
       title: `${lexical} (${translit}) – ${SITE_NAME}`,
       canonical: origin + slugPath(canonicalSlug),

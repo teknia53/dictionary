@@ -105,6 +105,13 @@ def parse_node(body):
             out[key] = re.sub(r"\s+", " ", val)
         else:
             out[key] = html.unescape(re.sub(r"<[^>]+>", "", val)).strip()
+    # The definition is the node body (label "Definition"); <greek-def> is the site's
+    # italic wrapper, which our dictionary table writes as <i>.
+    bm = re.search(r'field--name-body[^"]*field--label-above.*?<div class="field__item">(.*?)</div>\s*</div>',
+                   scope, re.S)
+    if bm:
+        body = re.sub(r"</?greek-def>", lambda m: "<i>" if m.group(0) == "<greek-def>" else "</i>", bm.group(1))
+        out["definition"] = re.sub(r"\s+", " ", body).strip()
     return out
 
 
@@ -116,6 +123,7 @@ def main():
     ap.add_argument("--slugs", help="comma-separated slugs to fetch instead of reading the TOC pages "
                     "(e.g. hagnos-0: Drupal's de-duplicated alias for the adverb ἁγνῶς, "
                     "which the TOC page links to the adjective's slug)")
+    ap.add_argument("--force", action="store_true", help="re-fetch slugs already in the JSON")
     args = ap.parse_args()
 
     data = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
@@ -130,7 +138,7 @@ def main():
             print(f"TOC {letter}: {len(s)} slugs", flush=True)
             slugs.extend(s)
     slugs = sorted(set(slugs))
-    todo = [s for s in slugs if data.get(s, {}).get("status") in (None, "error")]
+    todo = [s for s in slugs if args.force or data.get(s, {}).get("status") in (None, "error")]
     if args.limit:
         todo = todo[: args.limit]
     print(f"{len(slugs)} slugs total, {len(todo)} to fetch", flush=True)
