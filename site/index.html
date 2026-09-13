@@ -186,33 +186,22 @@
             color: #666;
         }
 
-        .word-gloss {
+        .word-definition {
             margin-top: 6px;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .word-gloss {
+            margin-top: 10px;
             font-size: 17px;
             line-height: 1.5;
         }
 
         .word-numbers {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 15px;
             color: #444;
-        }
-
-        .word-morph {
-            margin-top: 6px;
-            font-size: 15px;
-            color: #444;
-        }
-
-        .word-freq {
-            display: inline-block;
-            background: #e8f4fd;
-            color: #0067ac;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-left: 6px;
-            vertical-align: 1px;
         }
 
         .word-pparts {
@@ -228,12 +217,6 @@
         .word-pparts .greek {
             font-family: 'Times New Roman', Times, serif;
             font-size: 17px;
-        }
-
-        .word-definition {
-            font-size: 17px;
-            line-height: 1.6;
-            margin-top: 16px;
         }
 
         .concordance-section {
@@ -750,10 +733,10 @@
         }
 
         // The word card. Blue header: headword, then the full dictionary form. Body:
-        // transliteration; gloss; GK and Strong's numbers; morphology tag with the
-        // frequency (and principal parts for verbs); then the fuller definition. The
-        // dictionary form, gloss, MBG tag, and principal parts come from the old Drupal
-        // lexicon and may be empty.
+        // transliteration; the short definition; the longer gloss from the old Drupal
+        // lexicon; one line with GK, Strong's, morphology tag, and frequency; then
+        // principal parts for verbs. The dictionary form, gloss, MBG tag, and
+        // principal parts come from Drupal and may be empty.
         function wordHeader(word) {
             let html = `<div class="word-lexical">${word.lexical || ''}</div>`;
             if (word.dictionary_form) {
@@ -764,15 +747,17 @@
 
         function wordBody(word) {
             let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
+            html += `<div class="word-definition">${word.definition || ''}</div>`;
             if (word.gloss) {
                 html += `<div class="word-gloss">${word.gloss}</div>`;
             }
-            html += `<div class="word-numbers">GK ${escHtml(word.gk)}${word.strongs ? ' &middot; Strong\'s ' + escHtml(word.strongs) : ''}</div>`;
-            html += `<div class="word-morph">${word.mbg ? '<span title="Category in Mounce, The Morphology of Biblical Greek">' + escHtml(word.mbg) + '</span>' : ''}<span class="word-freq">${escHtml(word.frequency)}</span></div>`;
+            html += `<div class="word-numbers">GK ${escHtml(word.gk)}`
+                + (word.strongs ? ` &middot; Strong's ${escHtml(word.strongs)}` : '')
+                + (word.mbg ? ` &middot; Morphology: <span title="Category in Mounce, The Morphology of Biblical Greek">${escHtml(word.mbg)}</span>` : '')
+                + ` &middot; Frequency: ${escHtml(word.frequency)}</div>`;
             if (word.principal_parts) {
                 html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${escHtml(word.principal_parts)}</span></div>`;
             }
-            html += `<div class="word-definition">${word.definition || ''}</div>`;
             return html;
         }
 

@@ -67,10 +67,10 @@ function truncate(text, max) {
 // prerendered entry looks identical.
 
 // The word card. Blue header: headword, then the full dictionary form. Body:
-// transliteration; gloss; GK and Strong's numbers; morphology tag with the
-// frequency (and principal parts for verbs); then the fuller definition. The
-// dictionary form, gloss, MBG tag, and principal parts come from the old Drupal
-// lexicon and may be empty.
+// transliteration; the short definition; the longer gloss from the old Drupal
+// lexicon; one line with GK, Strong's, morphology tag, and frequency; then
+// principal parts for verbs. The dictionary form, gloss, MBG tag, and principal
+// parts come from Drupal and may be empty.
 function wordHeader(word) {
   let html = `<div class="word-lexical">${word.lexical || ''}</div>`;
   if (word.dictionary_form) {
@@ -81,15 +81,17 @@ function wordHeader(word) {
 
 function wordBody(word) {
   let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
+  html += `<div class="word-definition">${word.definition || ''}</div>`;
   if (word.gloss) {
     html += `<div class="word-gloss">${word.gloss}</div>`;
   }
-  html += `<div class="word-numbers">GK ${esc(word.gk)}${word.strongs ? ' &middot; Strong\'s ' + esc(word.strongs) : ''}</div>`;
-  html += `<div class="word-morph">${word.mbg ? '<span title="Category in Mounce, The Morphology of Biblical Greek">' + esc(word.mbg) + '</span>' : ''}<span class="word-freq">${esc(word.frequency)}</span></div>`;
+  html += `<div class="word-numbers">GK ${esc(word.gk)}`
+    + (word.strongs ? ` &middot; Strong's ${esc(word.strongs)}` : '')
+    + (word.mbg ? ` &middot; Morphology: <span title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</span>` : '')
+    + ` &middot; Frequency: ${esc(word.frequency)}</div>`;
   if (word.principal_parts) {
     html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${esc(word.principal_parts)}</span></div>`;
   }
-  html += `<div class="word-definition">${word.definition || ''}</div>`;
   return html;
 }
 
