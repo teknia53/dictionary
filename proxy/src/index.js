@@ -66,24 +66,28 @@ function truncate(text, max) {
 // Mirrors the markup the app builds client-side in site/index.html so the
 // prerendered entry looks identical.
 
-// The body of the word card. Order: transliteration; full dictionary form (with
-// principal parts for verbs); gloss; frequency; morphology tag; then the fuller
-// definition. The dictionary form, principal parts, gloss, and MBG tag come from
-// the old Drupal lexicon and may be empty.
-function wordBody(word) {
-  let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
+// The word card. Blue header: headword, then the full dictionary form. Body:
+// transliteration; gloss; GK and Strong's numbers; morphology tag with the
+// frequency (and principal parts for verbs); then the fuller definition. The
+// dictionary form, gloss, MBG tag, and principal parts come from the old Drupal
+// lexicon and may be empty.
+function wordHeader(word) {
+  let html = `<div class="word-lexical">${word.lexical || ''}</div>`;
   if (word.dictionary_form) {
     html += `<div class="word-form">${esc(word.dictionary_form)}</div>`;
   }
-  if (word.principal_parts) {
-    html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${esc(word.principal_parts)}</span></div>`;
-  }
+  return html;
+}
+
+function wordBody(word) {
+  let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
   if (word.gloss) {
     html += `<div class="word-gloss">${word.gloss}</div>`;
   }
-  html += `<div><span class="word-freq">${esc(word.frequency)}</span></div>`;
-  if (word.mbg) {
-    html += `<div class="word-mbg"><span class="label">Morphology tag: </span><span title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</span></div>`;
+  html += `<div class="word-numbers">GK ${esc(word.gk)}${word.strongs ? ' &middot; Strong\'s ' + esc(word.strongs) : ''}</div>`;
+  html += `<div class="word-morph">${word.mbg ? '<span title="Category in Mounce, The Morphology of Biblical Greek">' + esc(word.mbg) + '</span>' : ''}<span class="word-freq">${esc(word.frequency)}</span></div>`;
+  if (word.principal_parts) {
+    html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${esc(word.principal_parts)}</span></div>`;
   }
   html += `<div class="word-definition">${word.definition || ''}</div>`;
   return html;
@@ -106,11 +110,7 @@ function wordCard(word, entries) {
   return `
                 <div class="word-card">
                     <div class="word-header">
-                        <div class="word-lexical">${word.lexical || ''}</div>
-                        <div class="word-numbers">
-                            GK ${esc(word.gk)}
-                            ${word.strongs ? ' &middot; Strong\'s ' + esc(word.strongs) : ''}
-                        </div>
+                        ${wordHeader(word)}
                     </div>
                     <div class="word-body">
                         ${wordBody(word)}
