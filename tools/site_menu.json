@@ -1,0 +1,149 @@
+[
+  {
+    "title": "Classes",
+    "href": "https://www.billmounce.com/greek",
+    "children": [
+      {
+        "title": "Bible Study Greek",
+        "href": "https://www.billmounce.com/biblestudygreek/class"
+      },
+      {
+        "title": "Biblical Greek: First Year (track 1)",
+        "href": "https://www.billmounce.com/biblicalgreek/1/class"
+      },
+      {
+        "title": "Biblical Greek: First Year (track 2)",
+        "href": "https://www.billmounce.com/biblicalgreek/2/class"
+      },
+      {
+        "title": "Second Year Greek",
+        "href": "https://www.billmounce.com/second-year-greek"
+      }
+    ]
+  },
+  {
+    "title": "Resources",
+    "href": "https://www.billmounce.com/greekresources",
+    "children": [
+      {
+        "title": "Greek-English Interlinear Bible",
+        "href": "https://billmounce.com/InterlinearBible"
+      },
+      {
+        "title": "Greek Dictionary",
+        "href": "https://www.billmounce.com/greek-dictionary"
+      },
+      {
+        "title": "All Resources for BBG",
+        "href": "https://www.billmounce.com/first-year-biblical-greek"
+      },
+      {
+        "title": "FlashWorks",
+        "href": "https://www.billmounce.com/flashworks"
+      },
+      {
+        "title": "Greek Word of the Day",
+        "href": "https://www.billmounce.com/greekwordoftheday"
+      },
+      {
+        "title": "Fun Things to Say in Greek",
+        "href": "https://www.billmounce.com/fun-things-say-greek"
+      },
+      {
+        "title": "Free Greek Font: TekniaGreek",
+        "href": "https://www.billmounce.com/free-greek-font-tekniagreek"
+      },
+      {
+        "title": "Greek Unicode Keyboard",
+        "href": "https://www.billmounce.com/tekniagreek-unicode-keyboard"
+      },
+      {
+        "title": "Greek Alphabet",
+        "href": "https://www.billmounce.com/greekalphabet"
+      },
+      {
+        "title": "Greek Songs",
+        "href": "https://www.billmounce.com/greek-songs"
+      },
+      {
+        "title": "Greek and Hebrew Bingo",
+        "href": "https://www.billmounce.com/free_bingo"
+      },
+      {
+        "title": "TekniaGreek to Unicode converter",
+        "href": "https://www.billmounce.com/converter"
+      }
+    ]
+  },
+  {
+    "title": "Publications",
+    "href": "https://www.billmounce.com/bills-publications",
+    "children": [
+      {
+        "title": "Why I Trust the Bible",
+        "href": "https://www.billmounce.com/greekvocabulary/why-i-trust-the-bible"
+      },
+      {
+        "title": "Bible Study Greek",
+        "href": "https://www.billmounce.com/publications/bible-study-greek"
+      },
+      {
+        "title": "First Year Greek",
+        "href": "https://www.billmounce.com/first-year-biblical-greek"
+      },
+      {
+        "title": "Second Year Greek",
+        "href": "https://www.billmounce.com/publications/second-year-greek"
+      },
+      {
+        "title": "Professional and Pastoral Writing",
+        "href": "https://www.billmounce.com/publications/writing"
+      }
+    ]
+  },
+  {
+    "title": "Blogs",
+    "href": "https://www.billmounce.com/bills-blogs",
+    "children": [
+      {
+        "title": "Monday with Mounce",
+        "href": "https://www.billmounce.com/blogs/monday-with-mounce"
+      },
+      {
+        "title": "The Path",
+        "href": "https://www.billmounce.com/blogs/path"
+      },
+      {
+        "title": "Greek Word of the Day",
+        "href": "https://www.billmounce.com/blogs/gwotd"
+      },
+      {
+        "title": "Greek Verse of the Day",
+        "href": "https://www.billmounce.com/blogs/gvotd"
+      },
+      {
+        "title": "The Professor says",
+        "href": "https://www.billmounce.com/blogs/professor"
+      },
+      {
+        "title": "Bible Study Greek",
+        "href": "https://www.billmounce.com/blogs/bible-study-greek"
+      }
+    ]
+  },
+  {
+    "title": "Store",
+    "href": "https://www.billmounce.com/store",
+    "children": []
+  },
+  {
+    "title": "Donate",
+    "href": "https://www.gofundme.com/f/cover-my-website-costs?utm_campaign=p_lico+share-sheet&utm_medium=copy_link&utm_source=customer",
+    "children": []
+  },
+  {
+    "title": "Login",
+    "href": "https://www.billmounce.com/user/login",
+    "children": []
+  }
+]

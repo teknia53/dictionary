@@ -25,6 +25,8 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
+import site_header  # tools/site_header.py — the shared BillMounce.com header
+
 API_BASE = "https://flashworksbible-api.bill-mounce.workers.dev"
 SITE_HOST = "https://www.billmounce.com"
 DICT_PATH = "/greek-dictionary"
@@ -93,11 +95,9 @@ def short_gloss(definition, limit=90):
 CSS = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Georgia, 'Times New Roman', serif; background: #F7F3E9; color: #333; min-height: 100vh; }
-header { background: #0067ac; color: white; padding: 32px 0 24px; text-align: center; position: relative; }
-header h1 { font-size: 28px; font-weight: normal; letter-spacing: 1px; }
-header h1 a { color: white; text-decoration: none; }
-.back-link { position: absolute; top: 12px; left: 16px; color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; }
-.back-link:hover { color: white; text-decoration: underline; }
+.app-title { background: #005a96; color: white; padding: 18px 20px 16px; text-align: center; }
+.app-title h1 { font-size: 28px; font-weight: normal; letter-spacing: 1px; }
+.app-title h1 a { color: white; text-decoration: none; }
 main { max-width: 900px; margin: 0 auto 40px; padding: 0 20px; }
 .search-container { max-width: 700px; margin: 30px auto 0; }
 .search-box { display: flex; gap: 10px; }
@@ -132,12 +132,16 @@ p.intro a { color: #0067ac; }
 .index-list .g { font-family: 'Times New Roman', Times, serif; font-size: 22px; }
 .index-list .n { font-size: 13px; color: #888; }
 @media (max-width: 600px) {
-  header h1 { font-size: 22px; }
+  .app-title h1 { font-size: 22px; }
   .letter-table th:nth-child(5), .letter-table td:nth-child(5) { display: none; }
   .letter-table td, .letter-table th { padding: 6px 8px; font-size: 13px; }
   .letter-table .lex { font-size: 16px; }
 }
 """
+
+
+SITE_HEADER_HEAD = site_header.head_html()
+SITE_HEADER_BODY = site_header.body_html()
 
 
 def page(title, description, canonical_path, body):
@@ -150,12 +154,13 @@ def page(title, description, canonical_path, body):
     <meta name="description" content="{html.escape(description)}">
     <link rel="canonical" href="{SITE_HOST}{canonical_path}">
     <style>{CSS}</style>
+    {SITE_HEADER_HEAD}
 </head>
 <body>
-    <header>
-        <a href="https://www.billmounce.com" class="back-link">← Back to BillMounce.com</a>
+    {SITE_HEADER_BODY}
+    <div class="app-title">
         <h1><a href="{DICT_PATH}/">Greek New Testament Dictionary</a></h1>
-    </header>
+    </div>
     <main>
 {body}
     </main>
