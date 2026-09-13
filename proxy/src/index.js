@@ -66,6 +66,19 @@ function truncate(text, max) {
 // Mirrors the markup the app builds client-side in site/index.html so the
 // prerendered entry looks identical.
 
+// Principal parts (verbs) and the Morphology of Biblical Greek tag, from the old
+// Drupal lexicon. Either may be empty; the block is omitted when both are.
+function wordFacts(word) {
+  let facts = '';
+  if (word.principal_parts) {
+    facts += `<div><dt>Principal parts</dt><dd class="greek">${esc(word.principal_parts)}</dd></div>`;
+  }
+  if (word.mbg) {
+    facts += `<div><dt>Morphology tag</dt><dd title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</dd></div>`;
+  }
+  return facts ? `<dl class="word-facts">${facts}</dl>` : '';
+}
+
 function wordCard(word, entries) {
   let conc;
   if (!entries || entries.length === 0) {
@@ -92,6 +105,7 @@ function wordCard(word, entries) {
                     <div class="word-body">
                         <div class="word-translit">${word.transliteration || ''}</div>
                         <div class="word-freq">${esc(word.frequency)}</div>
+                        ${wordFacts(word)}
                         <div class="word-definition">${word.definition || ''}</div>
                         <div class="concordance-section">
                             ${conc}

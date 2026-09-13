@@ -201,6 +201,35 @@
             line-height: 1.6;
         }
 
+        .word-facts {
+            margin: 0 0 14px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .word-facts dt {
+            display: inline;
+            color: #666;
+        }
+
+        .word-facts dt::after {
+            content: ': ';
+        }
+
+        .word-facts dd {
+            display: inline;
+            margin: 0;
+        }
+
+        .word-facts dd.greek {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 17px;
+        }
+
+        .word-facts div + div {
+            margin-top: 2px;
+        }
+
         .concordance-section {
             margin-top: 24px;
             border-top: 2px solid #eee;
@@ -712,6 +741,19 @@
             }
         }
 
+        // Principal parts (verbs) and the Morphology of Biblical Greek tag, from the
+        // old Drupal lexicon. Either may be empty; the block is omitted when both are.
+        function wordFacts(word) {
+            let facts = '';
+            if (word.principal_parts) {
+                facts += `<div><dt>Principal parts</dt><dd class="greek">${escHtml(word.principal_parts)}</dd></div>`;
+            }
+            if (word.mbg) {
+                facts += `<div><dt>Morphology tag</dt><dd title="Category in Mounce, The Morphology of Biblical Greek">${escHtml(word.mbg)}</dd></div>`;
+            }
+            return facts ? `<dl class="word-facts">${facts}</dl>` : '';
+        }
+
         async function showWord(word) {
             // Fetch concordance in parallel
             let entries = [];
@@ -746,6 +788,7 @@
                     <div class="word-body">
                         <div class="word-translit">${word.transliteration}</div>
                         <div class="word-freq">${escHtml(word.frequency)}</div>
+                        ${wordFacts(word)}
                         <div class="word-definition">${word.definition}</div>
                         <div class="concordance-section">
                             ${concHtml}
