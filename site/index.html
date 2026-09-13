@@ -232,6 +232,8 @@
             margin-bottom: 4px;
         }
 
+        .conc-hit { color: #ff8800; }   /* the word and its parsing, inside { } */
+
         .concordance-text {
             font-size: 15px;
             line-height: 1.5;
@@ -747,6 +749,12 @@
             return html;
         }
 
+        // Concordance lines mark the word in question as "{ <i>legomenos</i> | pres pass ptcp
+        // nom sg masc }"; color that whole block so it stands out from the verse.
+        function highlightHit(text) {
+            return String(text || '').replace(/\{[^}]*\}/g, '<span class="conc-hit">$&</span>');
+        }
+
         async function showWord(word) {
             // Fetch concordance in parallel
             let entries = [];
@@ -764,7 +772,7 @@
                     concHtml += `
                         <div class="concordance-entry">
                             <div class="concordance-ref">${escHtml(e.reference)}</div>
-                            <div class="concordance-text">${e.concordance}</div>
+                            <div class="concordance-text">${highlightHit(e.concordance)}</div>
                         </div>`;
                 }
             }

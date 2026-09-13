@@ -96,6 +96,12 @@ function wordBody(word) {
   return html;
 }
 
+// Concordance lines mark the word in question as "{ <i>legomenos</i> | pres pass ptcp
+// nom sg masc }"; the app shell colors .conc-hit.
+function highlightHit(text) {
+  return String(text || '').replace(/\{[^}]*\}/g, '<span class="conc-hit">$&</span>');
+}
+
 function wordCard(word, entries) {
   let conc;
   if (!entries || entries.length === 0) {
@@ -106,7 +112,7 @@ function wordCard(word, entries) {
       conc += `
                         <div class="concordance-entry">
                             <div class="concordance-ref">${esc(e.reference)}</div>
-                            <div class="concordance-text">${e.concordance || ''}</div>
+                            <div class="concordance-text">${highlightHit(e.concordance)}</div>
                         </div>`;
     }
   }
