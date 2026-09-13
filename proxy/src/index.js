@@ -229,7 +229,7 @@ async function entryPage(env, request, url, slug) {
     return renderShell(shell, {
       title: `${lexical} (${translit}) – ${SITE_NAME}`,
       canonical: origin + slugPath(canonicalSlug),
-      description: `${lexical} (${translit}), GK ${word.gk}${word.strongs ? ', Strong\'s ' + word.strongs : ''}: ${gloss} Definition, frequency, and every New Testament occurrence, from Bill Mounce's ${SITE_NAME}.`,
+      description: `${lexical} (${translit}), GK ${word.gk}${word.strongs ? ', Strong\'s ' + word.strongs : ''}: ${gloss.replace(/[.,;:]?$/, '.')} Definition, frequency, and every New Testament occurrence, from Bill Mounce's ${SITE_NAME}.`,
       term: lexical,
       results: wordCard(word, entries),
     });
