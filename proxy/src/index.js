@@ -66,22 +66,21 @@ function truncate(text, max) {
 // Mirrors the markup the app builds client-side in site/index.html so the
 // prerendered entry looks identical.
 
-// The word card. Blue header: headword, then the full dictionary form. Body:
-// transliteration; the short definition; the longer gloss from the old Drupal
-// lexicon; one line with GK, Strong's, morphology tag, and frequency; then
-// principal parts for verbs. The dictionary form, gloss, MBG tag, and principal
-// parts come from Drupal and may be empty.
+// The word card. Blue header: for a verb, the headword with its principal parts
+// beneath; otherwise the full dictionary form (ἀγάπη, -ης, ἡ). Body:
+// transliteration; the gloss; one line with GK, Strong's, morphology tag, and
+// frequency; then the longer definition. The dictionary form, gloss, MBG tag,
+// and principal parts come from the old Drupal lexicon and may be empty.
 function wordHeader(word) {
-  let html = `<div class="word-lexical">${word.lexical || ''}</div>`;
-  if (word.dictionary_form) {
-    html += `<div class="word-form">${esc(word.dictionary_form)}</div>`;
+  if (word.principal_parts) {
+    return `<div class="word-lexical">${word.lexical || ''}</div>
+                        <div class="word-form">${esc(word.principal_parts)}</div>`;
   }
-  return html;
+  return `<div class="word-lexical">${word.dictionary_form ? esc(word.dictionary_form) : (word.lexical || '')}</div>`;
 }
 
 function wordBody(word) {
   let html = `<div class="word-translit">${word.transliteration || ''}</div>`;
-  html += `<div class="word-definition">${word.definition || ''}</div>`;
   if (word.gloss) {
     html += `<div class="word-gloss">${word.gloss}</div>`;
   }
@@ -89,9 +88,7 @@ function wordBody(word) {
     + (word.strongs ? ` &middot; Strong's ${esc(word.strongs)}` : '')
     + (word.mbg ? ` &middot; Morphology: <span title="Category in Mounce, The Morphology of Biblical Greek">${esc(word.mbg)}</span>` : '')
     + ` &middot; Frequency: ${esc(word.frequency)}</div>`;
-  if (word.principal_parts) {
-    html += `<div class="word-pparts"><span class="label">Principal parts: </span><span class="greek">${esc(word.principal_parts)}</span></div>`;
-  }
+  html += `<div class="word-definition">${word.definition || ''}</div>`;
   return html;
 }
 
