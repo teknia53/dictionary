@@ -76,7 +76,11 @@ function wordHeader(word) {
     return `<div class="word-lexical">${word.lexical || ''}</div>
                         <div class="word-form">${esc(word.principal_parts)}</div>`;
   }
-  return `<div class="word-lexical">${word.dictionary_form ? esc(word.dictionary_form) : (word.lexical || '')}</div>`;
+  const isVerb = /^c?v-/.test(word.mbg || '');
+  if (isVerb || !word.dictionary_form) {
+    return `<div class="word-lexical">${word.lexical || ''}</div>`;
+  }
+  return `<div class="word-lexical">${esc(word.dictionary_form)}</div>`;
 }
 
 function wordBody(word) {
